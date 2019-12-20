@@ -1,3 +1,8 @@
-# Introduction to algrand
+# algrand
+## Code for thinking about algorithmic randomness
 
-TODO: write [great documentation](http://jacobian.org/writing/what-to-write/)
+Example usage:
+
+```clojure
+(run! fmt-encoding (sort (drop-take 1000000 40 encodings)))
+```
