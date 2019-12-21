@@ -59,3 +59,11 @@
   in order, print binary reps of each to stdout."
   [[e x y]]
   (pp/cl-format true "~20b ~20b ~20b~%" e x y))
+
+(defn count-bits
+  "Count the number of bits in non-negative integers ns."
+  [& ns]
+  (count 
+    (apply str 
+           (map (fn [n] (Integer/toBinaryString n))
+                ns))))
