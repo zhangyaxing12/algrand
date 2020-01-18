@@ -22,8 +22,8 @@
   (:require [incanter.core :as ic]
             [incanter.stats :as ist]
             [incanter.charts :as ich])
-  (:import PinkNoise
-           PinkNoiseFast
+  (:import ; PinkNoise
+           ; PinkNoiseFast
            [ec.util MersenneTwister MersenneTwisterFast])) ; note MersenneTwister is slow but implements java.util.Random
 
 ;; EXAMPLES:

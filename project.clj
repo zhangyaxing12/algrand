@@ -8,3 +8,6 @@
                  [incanter/incanter "1.9.3"]
                 ]
   :repl-options {:init-ns algrand.core})
+
+  :source-paths ["src/clj"]
+  :java-source-paths ["src/java"]
