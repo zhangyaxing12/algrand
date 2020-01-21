@@ -10,12 +10,10 @@
   (loop [rs Rn-1]
     (when rs  ; if this is nil, bad args--we went too far
       (let [next-rs (next rs)
-            r (first next-rs)
-            r-size (count r)]
-        (cond
-          (= r-size rn) r            ; equal size, so choose this one
-          (> r-size rn) (first rs)   ; too big--go back to preceding one
-          :else (recur next-rs)))))) ; keep looking
+            r-size (count (first next-rs))]
+        (if (> r-size rn)
+          (first rs)   ; too big--go back to preceding one
+          (recur next-rs)))))) ; keep looking
 
 ;; assume Rn sorted by length
 ;(defn blah
