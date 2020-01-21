@@ -7,7 +7,10 @@
                  [org.clojure/math.numeric-tower "0.0.4"]
                  [incanter/incanter "1.9.3"]
                 ]
-  :repl-options {:init-ns algrand.core})
-
+  ; :repl-options {:init-ns algrand.core})
+  ; :main algrand.core
   :source-paths ["src/clj"]
   :java-source-paths ["src/java"]
+  ; :profiles {:uberjar {:aot :all}}
+  ; :target-path "target/%s"
+)
