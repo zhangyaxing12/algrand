@@ -13,7 +13,7 @@
   binary string s."
   [s]
   (let [s-len (count s)
-        s-weight (float (m/expt 2 (- s-len)))
+        s-weight (m/expt 2.0 (- s-len))
         s-int (read-string (str "2r" s)) ; binary integer
         left-bound (* s-int s-weight)
         right-bound (+ left-bound s-weight)]
