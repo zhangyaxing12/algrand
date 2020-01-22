@@ -1,11 +1,12 @@
+;;;; An implementation of the algorithm in Nie's proof of the 
+;;;; Machine Existence (Kraft-Chaitin) theorem in his book.
 (ns algrand.kraftchaitin
     (:require [clojure.pprint :as pp]))
 
-;; Nie's proof of the Machine Existence (Kraft-Chaitin) theorem:
 
 ;; Note that when r = length of z, that's the z we want.  This
 ;; function will skip past it and pull it back on the next iteration.
-;; This very slight inefficiency makes the code simpler.
+;; That very slight inefficiency makes the code simpler.
 (defn max-shorter
   "Given a sequence of strings Rn-1 sorted by length, and a string size r,
   returns the largest string with size greater than or equal to r."
