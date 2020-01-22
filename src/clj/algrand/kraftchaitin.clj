@@ -36,9 +36,6 @@
           (first zs)  ; too big--go back to preceding one
           (recur next-zs))))))
 
-;  (let [z (max-shorter Rn-1 r)])
-        ;pad-len (- r (count z))]
-
 (defn make-w
   [old-z pad-len]
   (apply str 
@@ -60,13 +57,12 @@
   (map (fn [pad-len] (make-new-z old-z pad-len))
        (range 1 (inc max-pad-len))))
 
-;; TODO  remove old z from Rn-1 (maybe do that in max-shorter?)
-;;       and append the new-zs to it,
-;;       then return it with w. or something
 (defn next-R-stage
   [Rn-1 r]
   (let [z (max-shorter r Rn-1)
         pad-len (- r (count z))
         w (make-w z pad-len) 
-        new-zs (make-zs z pad-len)]
-    ))
+        new-zs (make-zs z pad-len)
+        Rn (concat (remove (partial = z) Rn-1)
+                   (new-zs))]
+    [w Rn]))
