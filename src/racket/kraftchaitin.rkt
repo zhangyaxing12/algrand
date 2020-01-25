@@ -30,17 +30,17 @@
 ;; binary string s, e.g. "0110" for #b.0110; then return the pair as a list.
 (define (interval-of bin-string)
   (if (non-binary-string? bin-string)
-    (display (string-append "\"" bin-string "\""
-			    " contains characters other than #\\0 and #\\1."))
-    (let* ([len (string-length bin-string)])
-      (if (zero? len)
-	[#b0 #b1]
-	(let* ([left-bound (string->number (string-append "#b." bin-string))]
-	       [right-bound (+ left-bound (expt 2.0 (- len)))])
-	  (display 
-	    (string-append "["
-			   (number->bin-string left-bound)
-			   " "
-			   (number->bin-string right-bound)
-			   ")\n" ))
-	  (list left-bound right-bound))))))
+    (display (string-append "\"" bin-string "\"" " contains characters other than #\\0 and #\\1."))
+    (let* ([len (string-length bin-string)]
+	   [left-bound (if (zero? len)  ; empty string is special case
+			 #b0.0
+			 (string->number (string-append "#b." bin-string)))]
+	   [right-bound (if (zero? len)
+			  #b1.0 
+			  (+ left-bound (expt 2.0 (- len))))])
+      (display (string-append "["
+			      (number->bin-string left-bound)
+			      " "
+			      (number->bin-string right-bound)
+			      ")\n" ))
+      (list left-bound right-bound))))
