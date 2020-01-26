@@ -65,5 +65,12 @@
         w (make-w z pad-len) 
         new-zs (make-zs z pad-len)
         Rn (concat (remove (partial = z) Rn-1)
-                   (new-zs))]
+                   new-zs)]
     [w Rn]))
+
+;; FIXME
+(defn R-stages
+  [rs]
+  (reduce (fn [Rn-1 r] (next-R-stage Rn-1 r))
+          [""]
+          rs))
