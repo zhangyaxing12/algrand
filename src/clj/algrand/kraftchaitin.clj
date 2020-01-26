@@ -68,9 +68,50 @@
                    new-zs)]
     [w Rn]))
 
-;; FIXME
 (defn R-stages
   [rs]
-  (reduce (fn [Rn-1 r] (next-R-stage Rn-1 r))
-          [""]
+  (reduce (fn [[ws Rns] r] 
+              (let [[w Rn] (next-R-stage (first Rns) r)]
+                [(cons w ws) (cons Rn Rns)]))
+          [nil ""]
           rs))
+
+;; FIXME note bug displayed below:
+;; At step 4, Rn is empty.
+;; The w="000" at step 5 includes an earlier prefix "0".
+;; The problem seems to be in next-R-stage:
+; user=> (next-R-stage ["111"] 3)
+; ["111" ()]
+;
+;; OR MAYBE the problem was just that the list of sizes I gave is
+;; illegal: It gives a total weight > 1.0.  I think this might be
+;; it.  (Maybe I should test this first.)
+; 
+; user=> (clojure.pprint/pprint (R-stages [1 2 3 3 3 5 5 6 6 6 6 7 8]))
+; [("01000010"
+;   "0100000"
+;   "001111"
+;   "001110"
+;   "001101"
+;   "001100"
+;   "00101"
+;   "00100"
+;   "000"
+;   "111"
+;   "110"
+;   "10"
+;   "0")
+;  (("1" "011" "0101" "01001" "010001" "01000011")
+;   ("1" "011" "0101" "01001" "010001" "0100001")
+;   ("1" "01")
+;   ("1" "01" "001111")
+;   ("1" "01" "00111")
+;   ("1" "01" "00111" "001101")
+;   ("1" "01" "0011")
+;   ("1" "01" "0011" "00101")
+;   ("1" "01" "001")
+;   ()
+;   ("111")
+;   ("11")
+;   ("1"))]
+; nil
