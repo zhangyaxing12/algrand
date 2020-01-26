@@ -32,10 +32,9 @@
   returns the largest string with size greater than or equal to r."
   [Rn-1 r]
   (loop [zs Rn-1]
-    (cond (not (next zs)) (first zs)
+    (cond (not (next zs))          (first zs) ; no more; use what we have
           (< r (count (fnext zs))) (first zs)
-          :else 
-          (recur (next zs)))))
+          :else                    (recur (next zs)))))
 
 (defn make-w
   [old-z pad-len]
@@ -68,12 +67,23 @@
                    new-zs)]
     [w Rn]))
 
-(defn R-stages
+(defn requests-weight
+  "Calculate the 'weight' of a set of requested lengths for prefix-free 
+  input codes (Nies p. 86).  Each r in rs should be a non-negative
+  integer.  The weight is the sum_r 2^-r .  The weight condition is
+  the requirement that this sum be <= 1."
   [rs]
-  (let [weight (reduce (fn [sum r] (+ sum (m/expt 2.0 (- r))))
-                       0 rs)]
-    (if (> weight 1)
-      (throw (Exception. (str "Weight " weight " is greater than 1.")))
+  (reduce 
+    (fn [sum r] (+ sum (m/expt 2.0 (- r))))
+    0 rs))
+
+;; TODO: fix docstring
+(defn R-stages
+  "TODO.  Throws an exception if the weight condition is not satisfied."
+  [rs]
+  (let [weight (requests-weight rs)]
+    (if (> weight 1) ; test that weight condition is satisfieed
+      (throw (Exception. (str "Weight condition isn't satisfied: weight " weight " > 1.")))
       (reduce (fn [[ws Rns] r]
                   (let [[w Rn] (next-R-stage (first Rns) r)]
                     [(cons w ws) (cons Rn Rns)]))
