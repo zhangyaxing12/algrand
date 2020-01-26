@@ -70,7 +70,6 @@
 
 (defn R-stages
   [rs]
-  ;; run only if weight sum <= 1.0, return nil if not:
   (let [weight (reduce (fn [sum r] (+ sum (m/expt 2.0 (- r))))
                        0 rs)]
     (if (> weight 1)
