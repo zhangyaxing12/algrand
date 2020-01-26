@@ -70,11 +70,16 @@
 
 (defn R-stages
   [rs]
-  (reduce (fn [[ws Rns] r] 
-              (let [[w Rn] (next-R-stage (first Rns) r)]
-                [(cons w ws) (cons Rn Rns)]))
-          [nil ""]
-          rs))
+  ;; run only if weight sum <= 1.0, return nil if not:
+  (let [weight (reduce (fn [sum r] (+ sum (m/expt 2.0 (- r))))
+                       0 rs)]
+    (if (> weight 1)
+      (throw (Exception. (str "Weight " weight " is greater than 1.")))
+      (reduce (fn [[ws Rns] r]
+                  (let [[w Rn] (next-R-stage (first Rns) r)]
+                    [(cons w ws) (cons Rn Rns)]))
+              [nil ""]
+              rs))))
 
 ;; FIXME note bug displayed below:
 ;; At step 4, Rn is empty.
@@ -86,6 +91,7 @@
 ;; OR MAYBE the problem was just that the list of sizes I gave is
 ;; illegal: It gives a total weight > 1.0.  I think this might be
 ;; it.  (Maybe I should test this first.)
+;; Did new weight test above solve it?
 ; 
 ; user=> (clojure.pprint/pprint (R-stages [1 2 3 3 3 5 5 6 6 6 6 7 8]))
 ; [("01000010"
