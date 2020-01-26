@@ -82,6 +82,7 @@
   "TODO.  Throws an exception if the weight condition is not satisfied."
   [rs]
   (let [weight (requests-weight rs)]
+    (println "Weight:" weight) ; DEBUG
     (if (> weight 1) ; test that weight condition is satisfieed
       (throw (Exception. (str "Weight condition isn't satisfied: weight " weight " > 1.")))
       (reduce (fn [[ws Rns] r]
