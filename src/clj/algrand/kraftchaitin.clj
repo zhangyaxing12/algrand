@@ -30,14 +30,12 @@
 (defn max-shorter
   "Given a sequence of strings Rn-1 sorted by length, and a string size r,
   returns the largest string with size greater than or equal to r."
-  [r Rn-1]
+  [Rn-1 r]
   (loop [zs Rn-1]
-    (when zs  ; if this is nil, bad args--we went too far
-      (let [next-zs (next zs)
-            z-size (count (first next-zs))]
-        (if (> z-size r)
-          (first zs)  ; too big--go back to preceding one
-          (recur next-zs))))))
+    (cond (not (next zs)) (first zs)
+          (< r (count (fnext zs))) (first zs)
+          :else 
+          (recur (next zs)))))
 
 (defn make-w
   [old-z pad-len]
@@ -62,7 +60,7 @@
 
 (defn next-R-stage
   [Rn-1 r]
-  (let [z (max-shorter r Rn-1)
+  (let [z (max-shorter Rn-1 r)
         pad-len (- r (count z))
         w (make-w z pad-len) 
         new-zs (make-zs z pad-len)
