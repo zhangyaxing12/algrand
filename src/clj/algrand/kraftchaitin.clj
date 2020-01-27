@@ -37,15 +37,22 @@
           :else                    (recur (next zs)))))
 
 (defn make-w
+  "Given a z string indicating an available interval for an input code w, 
+  and a pad-len indicating how much longer the the desired w should be,
+  return a string that begins with z and has pad-len zeros appended to it."
   [old-z pad-len]
   (apply str 
          old-z 
          (repeat pad-len \0))) ; returns z if pad-len is zero
 
 (defn make-new-z
+  "Given a z string indicating a formerly available interval and a pad-len 
+  indicating the additional length of one of the replacement z's, return a 
+  string that begins with z, ends with 1, and has pad-len - 1 zeros between
+  them."
   [old-z pad-len]
   (if (< pad-len 1)
-    nil ; this shouldn't happen
+    (throw (Exception. (str "pad-len " pad-len " shouldn't be < 1.")))
     (str
       (apply str 
              old-z
@@ -90,44 +97,3 @@
                     [(cons w ws) (cons Rn Rns)]))
               [nil ""]
               rs))))
-
-;; FIXME note bug displayed below:
-;; At step 4, Rn is empty.
-;; The w="000" at step 5 includes an earlier prefix "0".
-;; The problem seems to be in next-R-stage:
-; user=> (next-R-stage ["111"] 3)
-; ["111" ()]
-;
-;; OR MAYBE the problem was just that the list of sizes I gave is
-;; illegal: It gives a total weight > 1.0.  I think this might be
-;; it.  (Maybe I should test this first.)
-;; Did new weight test above solve it?
-; 
-; user=> (clojure.pprint/pprint (R-stages [1 2 3 3 3 5 5 6 6 6 6 7 8]))
-; [("01000010"
-;   "0100000"
-;   "001111"
-;   "001110"
-;   "001101"
-;   "001100"
-;   "00101"
-;   "00100"
-;   "000"
-;   "111"
-;   "110"
-;   "10"
-;   "0")
-;  (("1" "011" "0101" "01001" "010001" "01000011")
-;   ("1" "011" "0101" "01001" "010001" "0100001")
-;   ("1" "01")
-;   ("1" "01" "001111")
-;   ("1" "01" "00111")
-;   ("1" "01" "00111" "001101")
-;   ("1" "01" "0011")
-;   ("1" "01" "0011" "00101")
-;   ("1" "01" "001")
-;   ()
-;   ("111")
-;   ("11")
-;   ("1"))]
-; nil
