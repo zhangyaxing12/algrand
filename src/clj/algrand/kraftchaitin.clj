@@ -67,7 +67,13 @@
   (map (fn [pad-len] (make-new-z old-z pad-len))
        (range 1 (inc max-pad-len))))
 
-(defn next-R-stage
+(defn next-w-and-Rn
+  "Given a previou Rn i.e. Rn-1 containing strings that represent intervals 
+  available for new prefix-free input codes and a requested lewngth of an 
+  input code, returns a pair, whose first element is a newly construct input 
+  code w and whose second element is a new Rn containing strings
+  representing available intervals for later input codes.  The length of a 
+  string in Rn represents the width of the interval, which is 2^-length."
   [Rn-1 r]
   (let [z (max-shorter Rn-1 r)
         pad-len (- r (count z))
@@ -78,25 +84,29 @@
     [w Rn]))
 
 (defn requests-weight
-  "Calculate the 'weight' of a set of requested lengths for prefix-free 
-  input codes (Nies p. 86).  Each r in rs should be a non-negative
-  integer.  The weight is the sum_r 2^-r .  The weight condition is
-  the requirement that this sum be <= 1."
+  "Calculate the 'weight' of a set of requested lengths for prefix-free input
+  codes.  Each r in rs should be a non-negative integer.  The weight is 
+  sum_r 2^-r.  The weight condition is the requirement that this sum be <= 1."
   [rs]
   (reduce 
     (fn [sum r] (+ sum (m/expt 2.0 (- r))))
     0 rs))
 
-;; TODO: fix docstring
-(defn R-stages
-  "TODO.  Throws an exception if the weight condition is not satisfied."
+(defn ws-and-Rns
+  "Given a list of requested lengths for prefix-free input codes, generates a 
+  sequence of those codes, paired with a sequence of Rn's containing strings
+  that represent intervals that are available for new input codes.  The
+  binary strings are digits after the decimal point reresenting the lower end
+  of the interval (inclusive).  The length of a string in an Rn
+  represents the width of the interval, which is 2^-length.  Throws an 
+  exception if the weight condition is not satisfied."
   [rs]
   (let [weight (requests-weight rs)]
     (println "Weight:" weight) ; DEBUG
     (if (> weight 1) ; test that weight condition is satisfieed
       (throw (Exception. (str "Weight condition isn't satisfied: weight " weight " > 1.")))
       (reduce (fn [[ws Rns] r]
-                  (let [[w Rn] (next-R-stage (first Rns) r)]
+                  (let [[w Rn] (next-w-and-Rn (first Rns) r)]
                     [(cons w ws) (cons Rn Rns)]))
               [nil ""]
               rs))))
