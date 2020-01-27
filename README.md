@@ -2,7 +2,7 @@
 Code for thinking about algorithmic randomness
 
 Most of this is in Clojure.  (I use Sean Luke's Java Mersenne Twister
-for pseudorandom number generation.) The clojure source is under
+for pseudorandom number generation.) The Clojure source is under
 *src/clj*`, with the fun stuff in *src/clj/algrand*.
 
 There are also a few functions written for the Racket dialect of Scheme
