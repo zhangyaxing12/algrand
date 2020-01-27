@@ -1,6 +1,8 @@
 ;;; An implementation of the algorithm in proof of the Machine 
 ;;; Existence (Kraft-Chaitin, KC) theorem 2.2.17, pp. 88f in André Nies' 
 ;; *Comutability and Randomness*, Oxford University Press 2009.
+;;
+;; See docs/kraftchaitin.md for additional usage info.
 
 (ns algrand.kraftchaitin
     (:require [clojure.pprint :as pp]
