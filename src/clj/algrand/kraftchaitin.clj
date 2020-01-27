@@ -60,6 +60,9 @@
       \1)))
 
 (defn make-zs
+  "Given a z string indicating a formerly available interval and a
+  max-pad-len indicating the maximum additional length of the new
+  substitute z's, return the newly constructed z's."
   [old-z max-pad-len]
   (map (fn [pad-len] (make-new-z old-z pad-len))
        (range 1 (inc max-pad-len))))
