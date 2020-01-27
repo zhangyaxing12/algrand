@@ -1,12 +1,15 @@
-Using algrand.kraftchaitin.clj
+Using kraftchaitin.clj
 ===
 
-kraftchaitin.clj contains an implementation of the algorithm in proof of
-the Machine Existence theorem 2.2.17, pp. 88f in André Nies'
+kraftchaitin.clj contains an implementation of the algorithm in the
+proof of the Machine Existence theorem 2.2.17, pp. 88f in André Nies'
 *Comutability and Randomness*, Oxford University Press 2009.  This
-theorem is more commonly known as the Kraft-Chaitin theorem, as in e.g.
-Calude's *Information and Randomness*.  Downey and Hirschfeldt call it
-the KC theorem.
+theorem is more commonly known as the Kraft-Chaitin theorem, e.g. in
+Calude's *Information and Randomness*.  Downey and Hirschfeldt's
+*Algorithmic Randomness and Complexity* calls it the KC theorem.
+Chaitin provides a version in his *Algorithim Information Theory*.  See
+any of these books--especially Downey and Hirschfeldt---for information
+on the original proof(s) of the theorem.
 
 ## Examples of suggested usage:
 
@@ -42,13 +45,15 @@ that all of the intervals together partition *[0,1)$.  For example:
   (pprint (sort (map interval-of (first Rns)))))
 ```
 
-## Output from examples of suggested usage:
+## Output from examples of suggested usage, with added comments:
 
 (1)
 ```clojure
 user=> (pprint (ws-and-Rns [3 3 5 2 3 6 9 10 9 9 10 11]))
 Weight: 0.68017578125
+;; The w's, i.e. input/program strings:
 [("11000110110" "1100011010" "110001100" "110001010" "1100010010" "110001000" "110000" "011" "10" "01000" "001" "000")
+;; *R*<sub>n</sub>'s, in last-generated first order:
  (("0101" "01001" "111" "1101" "11001" "1100010011" "110001011" "11000111" "11000110111")
   ("0101" "01001" "111" "1101" "11001" "1100010011" "110001011" "11000111" "1100011011")
   ("0101" "01001" "111" "1101" "11001" "1100010011" "110001011" "11000111" "110001101")
@@ -65,16 +70,16 @@ Weight: 0.68017578125
 
 (2) The first list below contains the intervals corresponding to input
 code strings.  The second list contains the intervals representing
-still-available intervals in the last *R*<sub>n</sub>.
+still-available intervals in the last *R*<sub>n</sub>.  Each Clojure
+vector pair represents an interval [*j*, *k*).  Close examination of the
+two lists will show that together they partition [0, 1).
 
 ```clojure
 user=> (let [[ws Rns] (ws-and-Rns [3 3 5 2 3 6 9 10 9 9 10 11])]
-	 (println)
          (pprint (sort (map interval-of ws)))
-	 (println)
          (pprint (sort (map interval-of (first Rns)))))
 Weight: 0.68017578125
-
+;; Intervals corresponding to w's, i.e. to input/program strings:
 ([0.0 0.125]
  [0.125 0.25]
  [0.25 0.28125]
@@ -87,7 +92,7 @@ Weight: 0.68017578125
  [0.7734375 0.775390625]
  [0.775390625 0.7763671875]
  [0.7763671875 0.77685546875])
-
+;; Intervals correspoding to strings in the final version of R_n:
 ([0.28125 0.3125]
  [0.3125 0.375]
  [0.7685546875 0.76953125]
