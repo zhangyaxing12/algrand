@@ -45,3 +45,11 @@
 			      ")\n" ))
       (list left-bound right-bound))))
 
+(define (fract-to-bin-str x)
+  (list->string (reverse (ftbs-aux x -1 '()))))
+
+(define (ftbs-aux x i bits)
+  (let ([dif (- x (expt 2.0 i))])
+    (cond [(zero? dif) (cons #\1 bits)]
+	  [(negative? dif) (ftbs-aux x   (- i 1) (cons #\0 bits))]
+	  [(positive? dif) (ftbs-aux dif (- i 1) (cons #\1 bits))])))
