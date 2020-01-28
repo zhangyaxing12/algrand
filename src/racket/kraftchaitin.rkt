@@ -46,7 +46,9 @@
       (list left-bound right-bound))))
 
 (define (fract-to-bin-str x)
-  (list->string (reverse (ftbs-aux x -1 '()))))
+  (if (zero? x)
+    "0"
+    (list->string (reverse (ftbs-aux x -1 '())))))
 
 (define (ftbs-aux x i bits)
   (let ([dif (- x (expt 2.0 i))])
