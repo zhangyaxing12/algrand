@@ -44,6 +44,8 @@ that all of the intervals together partition *[0,1)$.  For example:
   (pprint (sort (map interval-of ws)))
   (pprint (sort (map interval-of (first Rns)))))
 ```
+Or use `binary-interval-of` to use numbers that *appear* to be in
+human-readable binary format.
 
 ## Output from examples of suggested usage, with added comments:
 
