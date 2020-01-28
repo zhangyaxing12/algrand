@@ -36,13 +36,11 @@
   string that begins with z, ends with 1, and has pad-len - 1 zeros between
   them."
   [old-z pad-len]
-  (if (< pad-len 1)
-    (throw (Exception. (str "pad-len " pad-len " shouldn't be < 1.")))
-    (str
-      (apply str 
-             old-z
-             (repeat (dec pad-len) \0))
-      \1)))
+  (when (< pad-len 1) (throw (Exception. (str "pad-len " pad-len " shouldn't be < 1."))))
+  (str (apply str 
+              old-z
+              (repeat (dec pad-len) \0))
+       \1))
 
 (defn make-zs
   "Given a z string indicating a formerly available interval and a
@@ -112,10 +110,17 @@
         [left-bound right-bound]))))
 
 (defn fract-to-bin-str
+  "Given a fractional number, i.e. a number in [0,1), returns a human-readable 
+  binary string representation of the number."
   [x]
-  (apply str
-     (loop [y x, i -0, bits []]
-       (let [dif (- y (m/expt 2.0 i))]
-         (cond (zero? dif) bits
-               (neg?  dif) (recur dif (dec i) (conj bits 0))
-               (pos?  dif) (recur dif (dec i) (conj bits 1)))))))
+  (when (or (>= x 1) (neg? x))
+    (throw (Exception. (str "fract-to-bin-str is only defined for positive numbers in [0,1).  "
+                            "It was passed " x))))
+  (if (zero? x)
+    "0.0"
+    (apply str "0."
+           (loop [y x, i -1, bits []]
+                 (let [dif (- y (m/expt 2.0 i))]
+                   (cond (zero? dif) (conj bits 1)
+                         (neg?  dif) (recur y   (dec i) (conj bits 0))
+                         (pos?  dif) (recur dif (dec i) (conj bits 1))))))))
