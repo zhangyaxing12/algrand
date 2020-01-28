@@ -119,4 +119,3 @@
          (cond (zero? dif) bits
                (neg?  dif) (recur dif (dec i) (conj bits 0))
                (pos?  dif) (recur dif (dec i) (conj bits 1)))))))
-

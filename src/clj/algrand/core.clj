@@ -1,7 +1,8 @@
 ;; Miscellaneous utility functions
 (ns algrand.core
     (:require [clojure.pprint :as pp]
-              [clojure.math.numeric-tower :as m]))
+              ;[clojure.math.numeric-tower :as m]
+              ))
 
 (defn set-pprint-width 
   "Sets width for pretty-printing with pprint and pp."
