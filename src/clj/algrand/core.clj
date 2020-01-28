@@ -50,13 +50,3 @@
     (apply str 
            (map (fn [n] (pp/cl-format nil "~b" n)) ; (Integer/toBinaryString n)
                 ns))))
-
-(defn fract-to-bin-str
-  [x]
-  (apply str
-     (loop [y x, i -0, bits []]
-       (let [dif (- y (m/expt 2.0 i))]
-         (cond (zero? dif) bits
-               (neg?  dif) (recur dif (dec i) (conj bits 0))
-               (pos?  dif) (recur dif (dec i) (conj bits 1)))))))
-

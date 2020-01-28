@@ -110,3 +110,13 @@
             left-bound (* s-int s-weight)
             right-bound (+ left-bound s-weight)]
         [left-bound right-bound]))))
+
+(defn fract-to-bin-str
+  [x]
+  (apply str
+     (loop [y x, i -0, bits []]
+       (let [dif (- y (m/expt 2.0 i))]
+         (cond (zero? dif) bits
+               (neg?  dif) (recur dif (dec i) (conj bits 0))
+               (pos?  dif) (recur dif (dec i) (conj bits 1)))))))
+
