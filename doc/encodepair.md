@@ -1,5 +1,5 @@
-# algrand
-## Code for thinking about algorithmic randomness
+encodepair.clj usage
+====
 
 Example usage:
 
