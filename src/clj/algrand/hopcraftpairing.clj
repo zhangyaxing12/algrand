@@ -34,6 +34,3 @@
     (- (c-of-pair h)
        (first-elt h)
        -2)))
-
-
-
